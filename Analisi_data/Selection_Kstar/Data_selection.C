@@ -1,0 +1,220 @@
+//////////////////////////////////////////////////////////////////////////
+// to use it:
+// make Data_selection
+// ./Data_selection
+/////////////////////////////////////////////////////////////////////////
+
+
+#include "Inclusion.h" //oppure #include "/path/to/file/Inclusion.h"
+//Seleziona i dati - trigger e stripping
+
+
+void Data_selection() {
+
+  //Importazione tree originale
+	TChain *datatree = new TChain("Bd2JpsiKstz/DecayTree;1");
+	datatree->Add("/run/media/akurzina/TOSHIBA EXT/DGfiles/B0JpsiKstar2016Up_Data_43.root");
+
+  //Variabili Trigger
+ 	bool Bd_L0Global_TOS, Bd_Hlt1DiMuonHighMassDecision_TOS, Bd_Hlt2DiMuonDetachedJPsiDecision_TOS, Bd_Hlt2DiMuonJPsiDecision_TOS ;
+  //Variabili Stripping
+    double muminus_PT, muminus_PIDmu, muplus_PT, muplus_PIDmu;
+    double Jpsi_ENDVERTEX_CHI2, Jpsi_M, Jpsi_FDCHI2_OWNPV;
+    double Kplus_PIDK, Kstz_PT, piminus_PT, Kstz_M;
+	double piminus_PIDK;
+    double Bd_LOKI_MASS_JpsiConstr, Bd_IPCHI2_OWNPV, Bd_MINIPCHI2NEXTBEST;
+    int Bd_ENDVERTEX_NDOF; 
+    double Bd_ENDVERTEX_CHI2;
+	double muplus_LOKI_ETA, muminus_LOKI_ETA, Kplus_LOKI_ETA, piminus_LOKI_ETA;
+	double muminus_TRACK_CHI2NDOF, muplus_TRACK_CHI2NDOF, piminus_TRACK_CHI2NDOF, Kplus_TRACK_CHI2NDOF;
+	int  Jpsi_ENDVERTEX_NDOF;
+	
+	double Kstz_ENDVERTEX_CHI2, Kstz_IPCHI2_OWNPV;
+	int Kstz_ENDVERTEX_NDOF;
+	
+	float Bd_PVConstPVReRecoCovShift_chi2[10], Bd_PVConstPVReRecoCovShift_ctau[10],  Bd_PVConstPVReRecoCovShift_nDOF[10] ;
+        
+	double c = 2.99792458E11; //velocita luce
+  	double ps = pow(10, -12); //picosecondi
+
+	datatree->SetBranchStatus("*",0);
+	datatree->SetBranchStatus("Bd_L0Global_TOS", 1);
+    datatree->SetBranchStatus("Bd_Hlt1DiMuonHighMassDecision_TOS", 1);
+    datatree->SetBranchStatus("Bd_Hlt2DiMuonDetachedJPsiDecision_TOS",1);
+	datatree->SetBranchStatus("Bd_Hlt2DiMuonJPsiDecision_TOS",1);
+	datatree->SetBranchStatus("muminus_PT", 1);
+	datatree->SetBranchStatus("muplus_PT", 1);
+	datatree->SetBranchStatus("muminus_PIDmu", 1);
+	datatree->SetBranchStatus("muplus_PIDmu", 1);
+	datatree->SetBranchStatus("Jpsi_ENDVERTEX_CHI2", 1);
+	datatree->SetBranchStatus("Jpsi_ENDVERTEX_NDOF", 1);
+	datatree->SetBranchStatus("Jpsi_M", 1);
+	datatree->SetBranchStatus("Jpsi_FDCHI2_OWNPV", 1);
+	datatree->SetBranchStatus("Kplus_PIDK", 1);
+	datatree->SetBranchStatus("piminus_PIDK", 1);
+	
+	datatree->SetBranchStatus("Kstz_ENDVERTEX_CHI2", 1);
+	datatree->SetBranchStatus("Kstz_ENDVERTEX_NDOF", 1);
+	datatree->SetBranchStatus("Kstz_PT", 1);
+	datatree->SetBranchStatus("Kstz_IPCHI2_OWNPV", 1);
+	
+	datatree->SetBranchStatus("piminus_PT", 1);
+	datatree->SetBranchStatus("Kstz_M",1);
+
+	datatree->SetBranchStatus("Bd_IPCHI2_OWNPV", 1);
+	datatree->SetBranchStatus("Bd_MINIPCHI2NEXTBEST", 1);
+	datatree->SetBranchStatus("Bd_PVConstPVReRecoCovShift_chi2", 1);
+	datatree->SetBranchStatus("Bd_PVConstPVReRecoCovShift_nDOF", 1);
+	datatree->SetBranchStatus("Bd_PVConstPVReRecoCovShift_ctau", 1);
+	
+    datatree->SetBranchStatus("Bd_ENDVERTEX_NDOF", 1);
+    datatree->SetBranchStatus("Bd_ENDVERTEX_CHI2", 1);
+	
+	datatree->SetBranchStatus("muplus_LOKI_ETA", 1);
+	datatree->SetBranchStatus("muminus_LOKI_ETA", 1);
+	datatree->SetBranchStatus("Kplus_LOKI_ETA", 1);
+	datatree->SetBranchStatus("piminus_LOKI_ETA", 1);
+       // datatree->SetBranchStatus("Bd_TRUETAU", 1);
+    datatree->SetBranchStatus("muminus_TRACK_CHI2NDOF", 1);
+	datatree->SetBranchStatus("muplus_TRACK_CHI2NDOF", 1);
+    datatree->SetBranchStatus("piminus_TRACK_CHI2NDOF", 1);
+	datatree->SetBranchStatus("Kplus_TRACK_CHI2NDOF", 1);
+
+	
+	
+	datatree->SetBranchAddress("Bd_L0Global_TOS", &Bd_L0Global_TOS);
+ 	datatree->SetBranchAddress("Bd_Hlt1DiMuonHighMassDecision_TOS", &Bd_Hlt1DiMuonHighMassDecision_TOS);
+    datatree->SetBranchAddress("Bd_Hlt2DiMuonDetachedJPsiDecision_TOS", &Bd_Hlt2DiMuonDetachedJPsiDecision_TOS);
+	datatree->SetBranchAddress("Bd_Hlt2DiMuonJPsiDecision_TOS", &Bd_Hlt2DiMuonJPsiDecision_TOS);
+	datatree->SetBranchAddress("muminus_PT", &muminus_PT);
+    datatree->SetBranchAddress("muplus_PT", &muplus_PT);
+	datatree->SetBranchAddress("muminus_PIDmu", &muminus_PIDmu);
+ 	datatree->SetBranchAddress("muplus_PIDmu", &muplus_PIDmu);
+ 	datatree->SetBranchAddress("Jpsi_ENDVERTEX_CHI2", &Jpsi_ENDVERTEX_CHI2);
+ 	datatree->SetBranchAddress("Jpsi_ENDVERTEX_NDOF", &Jpsi_ENDVERTEX_NDOF);
+ 	datatree->SetBranchAddress("Jpsi_M", &Jpsi_M);
+ 	datatree->SetBranchAddress("Jpsi_FDCHI2_OWNPV", &Jpsi_FDCHI2_OWNPV);
+ 	datatree->SetBranchAddress("Kplus_PIDK", &Kplus_PIDK);
+	datatree->SetBranchAddress("piminus_PIDK", &piminus_PIDK);
+ 	
+ 	datatree->SetBranchAddress("Kstz_PT", &Kstz_PT);
+ 	datatree->SetBranchAddress("Kstz_ENDVERTEX_NDOF", &Kstz_ENDVERTEX_NDOF);
+ 	datatree->SetBranchAddress("Kstz_ENDVERTEX_CHI2", &Kstz_ENDVERTEX_CHI2);
+ 	datatree->SetBranchAddress("Kstz_IPCHI2_OWNPV", &Kstz_IPCHI2_OWNPV);
+ 	
+ 	datatree->SetBranchAddress("piminus_PT", &piminus_PT);
+ 	datatree->SetBranchAddress("Kstz_M", &Kstz_M);
+ 	
+ 	datatree->SetBranchAddress("Bd_LOKI_MASS_JpsiConstr", &Bd_LOKI_MASS_JpsiConstr);
+ 	datatree->SetBranchAddress("Bd_IPCHI2_OWNPV", &Bd_IPCHI2_OWNPV);
+ 	datatree->SetBranchAddress("Bd_MINIPCHI2NEXTBEST", &Bd_MINIPCHI2NEXTBEST);
+ 	datatree->SetBranchAddress("Bd_PVConstPVReRecoCovShift_chi2", &Bd_PVConstPVReRecoCovShift_chi2);
+ 	datatree->SetBranchAddress("Bd_PVConstPVReRecoCovShift_nDOF", &Bd_PVConstPVReRecoCovShift_nDOF);
+	
+	datatree->SetBranchAddress("Bd_ENDVERTEX_NDOF", &Bd_ENDVERTEX_NDOF);
+	datatree->SetBranchAddress("Bd_ENDVERTEX_CHI2", &Bd_ENDVERTEX_CHI2);
+	
+	datatree->SetBranchAddress("Bd_PVConstPVReRecoCovShift_ctau", &Bd_PVConstPVReRecoCovShift_ctau);
+	
+	datatree->SetBranchAddress("muplus_LOKI_ETA", &muplus_LOKI_ETA);
+	datatree->SetBranchAddress("muminus_LOKI_ETA", &muminus_LOKI_ETA);
+	datatree->SetBranchAddress("Kplus_LOKI_ETA", &Kplus_LOKI_ETA);
+	datatree->SetBranchAddress("piminus_LOKI_ETA", &piminus_LOKI_ETA);
+    datatree->SetBranchAddress("muminus_TRACK_CHI2NDOF", &muminus_TRACK_CHI2NDOF);
+    datatree->SetBranchAddress("muplus_TRACK_CHI2NDOF", &muplus_TRACK_CHI2NDOF);
+	datatree->SetBranchAddress("piminus_TRACK_CHI2NDOF", &piminus_TRACK_CHI2NDOF);
+	datatree->SetBranchAddress("Kplus_TRACK_CHI2NDOF", &Kplus_TRACK_CHI2NDOF);
+	
+	
+	
+	//Creo nuovo tree
+ 	TFile newfile("B0JpsiKstar2016Up_Data_43_Selected.root", "recreate");
+ 	auto newtree = datatree->CloneTree(0);
+	float time;
+	newtree->Branch("time", &time, "time");
+
+//datatree->GetEntries()
+
+	for(int i=0; i<datatree->GetEntries(); i++){
+
+ 		datatree->GetEntry(i);
+
+		time = Bd_PVConstPVReRecoCovShift_ctau[0]/c/ps;
+ 		//Controllo Trigger
+ 		//
+ 		if(Bd_L0Global_TOS != 1 || Bd_Hlt1DiMuonHighMassDecision_TOS != 1 || (Bd_Hlt2DiMuonDetachedJPsiDecision_TOS != 1 && Bd_Hlt2DiMuonJPsiDecision_TOS != 1) ){ continue;}
+
+ 		//Stripping
+
+ 		if(muminus_PIDmu <= 0 ||  muplus_PIDmu <= 0 ){continue;	}
+
+ 		if(muminus_PT <= 500 ||  muplus_PT <= 500 ){continue;	}
+
+
+ 		if((Jpsi_ENDVERTEX_CHI2/Jpsi_ENDVERTEX_NDOF) >= 16){continue;	}
+
+
+ 		if(Jpsi_M < 3030 ||  Jpsi_M > 3150){continue;	}
+
+ 		// if(Jpsi_FDCHI2_OWNPV < 3){continue;	}
+
+ 	      
+ 		if(muminus_TRACK_CHI2NDOF > 3){continue;	}
+ 		if(muplus_TRACK_CHI2NDOF > 3){continue;	}
+ 		if(piminus_TRACK_CHI2NDOF > 3){continue;	}
+ 		if(Kplus_TRACK_CHI2NDOF > 3){continue;	}
+ 		
+ 		
+ 		if(Kplus_PIDK < 0){continue;	}
+
+		if (piminus_PIDK > 0){continue;	}
+
+		if(Kstz_PT <= 1300){continue;	}
+
+ 		if((Kstz_ENDVERTEX_CHI2/Kstz_ENDVERTEX_NDOF) >= 25){continue;	}
+ 		
+ 		if(Kstz_IPCHI2_OWNPV > 30){continue;	}
+ 		//DOCA
+ 		
+ 		
+ 		if(piminus_PT <= 300){continue;	}
+
+ 		if(Kstz_M < 826 || Kstz_M > 966){continue;	}
+
+ 		if(Bd_LOKI_MASS_JpsiConstr < 5150 || Bd_LOKI_MASS_JpsiConstr > 5340){continue;	}
+
+ 		//if(log(Bd_IPCHI2_OWNPV) > 4){continue;	}
+ 		if(Bd_IPCHI2_OWNPV > 25){continue;	}
+ 		
+ 		if(Bd_MINIPCHI2NEXTBEST < 50 && Bd_MINIPCHI2NEXTBEST != (-1)){continue;	}
+
+ 		//if(log((Bd_PVConstPVReRecoCovShift_chi2[0] / Bd_PVConstPVReRecoCovShift_nDOF[0]))  > 2){continue;	}
+               
+               if((Bd_PVConstPVReRecoCovShift_chi2[0] / Bd_PVConstPVReRecoCovShift_nDOF[0])  > 2){continue;	}
+              //dtf
+
+               
+               if((Bd_ENDVERTEX_CHI2/Bd_ENDVERTEX_NDOF) > 5){continue;}
+
+ 		if((Bd_PVConstPVReRecoCovShift_ctau[0]/c/ps ) < (0.3) || (Bd_PVConstPVReRecoCovShift_ctau[0]/c/ps) > (14 ) ){continue;	}
+
+		if((muplus_LOKI_ETA < 2 || muplus_LOKI_ETA > 5) || (muminus_LOKI_ETA < 2 || muminus_LOKI_ETA > 5) ||
+		   (Kplus_LOKI_ETA < 2 || Kplus_LOKI_ETA > 5) || (piminus_LOKI_ETA < 2 || piminus_LOKI_ETA > 5)){continue;	}
+
+		//newtree->CopyEntries(datatree);
+ 		newtree->Fill();
+    
+    
+    }
+
+ 	newtree->Print();
+ 	newfile.Write("", TObject::kOverwrite);
+
+}
+
+int main( int argv, const char * argc[] )
+{
+    Data_selection();
+		cout << "The end" << endl;
+    return 0;
+}
